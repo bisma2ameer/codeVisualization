@@ -1,0 +1,541 @@
+#include<iostream>
+#include<windows.h>
+#include<conio.h>
+using namespace std;
+class ContactBook
+{
+	public:
+		int id;
+		long number;
+		string name;
+	ContactBook()
+	{
+		id=0;
+		number=0;
+		name=" ";
+	}
+	ContactBook(int id, long number, string name)
+	{
+		this->id=id;
+		this->number=number;
+		this->name=name;
+	}
+	string getName()
+	{
+		return name;
+	}
+	int getId()
+	{
+		return id;
+	}
+	long getNumber()
+	{
+		return number;
+	}
+	void setName(string name)
+	{
+		this->name=name;
+	}
+	void setId(int id)
+	{
+		this->id=id;
+	}
+	void setNumber(long number)
+	{
+		this->number=number;
+	}
+	void Print()
+		{
+			cout<<"Person ID : " <<id<<endl;
+			cout<<"Person Name : "<<name << endl;
+			cout<<"Person Number : "<<number<<endl;
+		}
+};
+class Node
+{
+		public:
+		ContactBook cb;
+		Node *next;
+};
+class ListOperations
+{
+	private:
+		Node *head , *tail;
+	public:
+		ListOperations()
+		{
+		head=NULL;
+		tail==NULL;	
+		}
+		ListOperations(Node *head , Node *tail)
+		{
+			this->head=head;
+			this->tail=tail;
+		}
+		Node *getHead()
+		{
+			return head;
+		}
+		Node *getTail()
+		{
+			return tail;
+		}
+		void  setHead(Node *head)
+		{
+			this->head=head;
+		}
+		void setTail(Node *tail)
+		{
+			this->tail=tail;
+		}
+		void insertionAtHead(ContactBook CB)     
+		{	
+		//insert at starting of list
+	  	Node *newNode=new Node; 
+	  	newNode->cb=CB;
+	  	//if list is empty
+	  	if(head==NULL)
+		{   
+	  	head=newNode;
+	  	tail=newNode;
+		cout<<"\n\n\n\n\n\n\n\n\n\n\n\n\t\t\t\t\t!!!1st Contact Created Successfully!!!\n";
+		} 
+		//if list not empty
+	  	else if(head!=NULL) 
+	   	{
+	    newNode->next=head;
+	   	head=newNode;
+	   	cout<<"\n\n\n\n\n\n\n\n\n\n\n\n\t\t\t\t\t!!!Contact Created!!!\n";
+		}
+		Sleep(1000);
+		system("cls");
+		}
+		void InsertAtTail(ContactBook CB)
+		{
+			Node *temp=new Node;
+			temp->cb=CB;
+			if(head==NULL)
+			{
+				head = temp;
+				tail = temp;
+				temp->next=NULL;
+				
+				
+			}
+			else{
+			tail->next=temp;
+			temp->next=NULL;
+			tail=temp;
+		}
+		}
+		//.........................................................................................................
+			void SortedinsertAfterNode(ContactBook CB){
+			Node *node=new Node;
+			node->cb=CB; 
+			
+			if(CB.getId()!=tail->cb.getId())
+			{	Node *prev=head; 
+				while(prev->next!=head)
+				{
+					if(CB.getId()>prev->cb.getId() && CB.getId()<prev->next->cb.getId()  )  //sorted insertion inbetween 2 nodes
+					{
+						Node *nextNode=prev->next;
+						prev->next=node; 
+						node->next=nextNode; 
+						break; 
+					}
+					prev=prev->next; 
+				}
+			}
+			else
+			{
+				tail->next=node; 
+				tail=node;
+				tail->next=head; 
+			}
+		}
+		//............
+		//sorting
+	
+	//...........................................................................................
+		//Display contacts in reverse order.......
+		void displayReverseList()
+		{
+			Node *temp = head;
+			Node *prev = NULL;
+			Node *next;
+			while(temp!=NULL)
+			{
+				
+				next=temp->next;
+				temp->next=prev;
+				prev=temp;
+				temp=next;
+				
+			}
+			head=prev;
+			
+		}
+		//.......................................................................................................
+		//Display as taken input either inserted at head or tail........
+		void displayList()
+		{
+	 	if(head==NULL)
+	 	cout<<"No Contacts!\n";
+				Node *temp =head;
+				while(temp!=NULL)
+				{
+					cout<<"*******************\n";
+					temp->cb.Print();
+				    temp= temp->next;
+				    cout<<"*******************\n";
+				}	
+		}
+		//...........................................................................................................
+		//Method for inserting in between
+		void insertionInBetween(int id) 
+		{
+		ContactBook CB;
+	   	int ID; 
+		long number; 
+		string name;
+		bool found=false; 
+	   	Node *newNode=new Node;
+	   	Node *prev=new Node;
+	   	prev=head;
+	   	//maching the input id with the list idss
+	  	while(prev!=NULL)
+		{	   	
+		 //if maches then.....
+	   	  if(prev->cb.getId()==id)    
+		   {
+		   	cout<<"Person Name : ";
+ 	        cin>>name;
+ 	        cout<<"Person Id : ";
+ 	        cin>>ID;
+ 	        cout<<"Person Contact Number : ";
+ 	        cin>>number;
+ 	        system("cls");  
+ 	        CB.setName(name);
+ 	        CB.setId(ID);
+ 	        CB.setNumber(number); 
+	   	    newNode->cb=CB;
+	   	    // if the input id matches the last id insert at tail
+			if(prev->next==NULL)     
+			 {
+			tail->next=newNode;
+	   	    tail=tail->next;
+	   	    tail->next=NULL;
+	   	    found=true; 
+	   	    //system("cls");
+	   	    Sleep(1000);
+	   	    cout<<"\n\n\n\n\n\n\n\n\n\n\n\n\t\t\t\t\t!!!Inserted at the End of list!!!\n";
+			}
+			//else it will insert in between
+			else                   
+			{
+			Node *node=prev->next; 
+		   	newNode->next=node; 
+	   		prev->next=newNode;
+			found=true;
+			system("cls");
+			
+			displayList();
+			Sleep(1000);
+			system("cls");
+	   	    cout<<"\n\n\n\n\n\n\n\n\n\n\n\n\t\t\t\t\t!!!INSERTED IN BETWEEN SUCCESSFULLY!!!\n";
+	   	    Sleep(1000);
+	   	    system("cls");
+	   	    }
+		    }
+		    prev=prev->next;
+	        }
+	        //if id does not matches
+	    if(found==false)
+		{
+		system("cls");
+		Sleep(1000);
+	    cout<<"\n\n\n\n\n\n\n\n\n\n\n\n\t\t\t\t\tPersonn Id "<<id<<" is not Mached\n"; 
+		}
+		}//Ending........
+		//......................................................................................
+		int UpdateContact(int id)
+		//Updating a Node.....
+		{
+			if(head==NULL)
+			cout<<"Empty list\n";
+			Node *temp = head;
+			
+			while(temp!=NULL)
+			{
+				if(temp->cb.getId()==id)
+				{
+					cout<<"Enter Updated Person Name : ";
+					cin>>temp->cb.name;
+					
+					cout<<"Enter Updated Person Id : ";
+					cin>>temp->cb.id;
+				
+					cout<<"Enter Updated Person Number : ";
+					cin>>temp->cb.number;
+				}
+				temp=temp->next;
+			}
+			cout<<"\nUPDATED SUCCESSFULLY!!!\n";
+		}
+		//.........................................................................................
+				void sortedInsertion(ContactBook CB)
+		{
+			//ContactBook CB;
+		//	Node *temp = head;
+			if(head==NULL)
+				insertionAtHead(CB);
+				 
+			else if(CB.getId()<=head->cb.getId())
+			//	InsertAtTail(CB); 
+					insertionAtHead(CB);
+			else if(CB.getId()>=tail->cb.getId())
+				InsertAtTail(CB); 
+		else
+			//else if(n>temp->cb.getName() )
+				SortedinsertAfterNode(CB);
+		}
+		//..........................................deleteion........................................
+		//delete first node
+		void delFir(){
+       	if(head==NULL){
+       		cout<<"Contact is not present\n";
+		   }
+		   else{
+		   	Node *current=head;
+		   	Node *temp=new Node;
+		   	head=head->next;
+		   	delete current;
+		   	cout<<"First Contact is Deleted\n";
+		   }
+	   }
+		//.........................................................................................
+		//Delete in between node
+		
+		void deleteInBetween(int Id)     
+	    {
+        Node *temp=new Node;
+	    Node *current=head; 
+	  	ContactBook CB;
+	    while(current!=NULL)
+	    { 
+		if(current->cb.getId()==Id)
+		{
+		temp->next=current->next; 
+		delete current;
+		current=temp->next; 
+		cout<<"Contact is Deleted\n";
+		}
+		temp=current;
+	    current=current->next;
+		}
+       	}
+       	//.....................................................................................
+       	//Delete last Node........
+       		void DeleteLast(){
+			Node *curr=new Node;
+			Node *prev=new Node;
+			curr=head;
+			while(curr->next!=NULL){
+				prev=curr;
+				curr=curr->next;
+			}
+			tail=prev;
+			prev->next=NULL;
+			delete curr;
+			cout<<"Last Contact IS Deleted\n";
+		}
+		//..................................................................................
+		//..........................Searching...............................................
+		void SearchWithChar(char n)
+		{
+			Node *temp = head;
+			while(temp!=NULL)
+			{
+				if(*temp->cb.getName().begin()==n )
+				{
+					temp->cb.Print();
+				}
+				temp=temp->next;
+			}
+		}	
+		//.................................................................................
+		//.Search with name................................................................
+			void Search(string n)
+		{
+			Node *temp = head;
+			while(temp!=NULL)
+			{
+				if(temp->cb.getName()==n )
+				{
+					temp->cb.Print();
+				}
+				temp=temp->next;
+			}
+		}	
+};
+int main()
+{
+	int n=1;
+	int choice;
+	int id;
+	long number;
+	string name;
+	ContactBook cb;
+	ListOperations lo;
+	int ch;
+	int newID;
+	int del;
+	cout<<"\n\n\n\n\n\n\n\n\n\n\n\n\t\t\t\t\tLoading.....\n\t\t\t\t";
+	for(int i=0; i<23; i++)
+	{
+		Sleep(50);
+		cout<<char(219);
+	}
+	//Sleep(1000);
+	system("cls");
+	cout<<"\n\n\n\n\n\n\n\n\n\n\n\n\t\t\t:)WELCOME TO PHONE DIRECTORY APPLICATION:)\n";
+	//Sleep(1000);
+	//system("cls");	
+	//While loop started
+	while(n==1)
+	{
+		if(n==0)
+		{
+			Sleep(1000);
+			break;
+		}
+	cout<<"\n\t\t\t\tENTER YOUR CHOICE\n";
+	cout<<"\t\t_______________________________________________________\n";
+	cout<<"\t\t1 : Create New Contact\n\t\t2 : Delete Contact\n\t\t3 : Read Contact List\n\t\t4 : Update any Contact\n\t\t5 : Search Contact\n\t\t6 : Sort";
+	cout<<"\n\t\t_______________________________________________________\n";
+	cin>>choice;
+	//Creating or adding contacts
+	if(choice==1)
+	{
+	system("cls");
+	cout<<"\n\t\t\t\tCREATE NEW CONTACT\n";
+	cout<<"\t\t_______________________________________________________\n";
+	cout<<"\t\t1 : Sorted Creation\n\t\t2 : Creating In Between\n";
+	cout<<"\t\t_______________________________________________________\n";
+	
+		
+		cin>>ch;
+		//sub choice 1 of creating contact at the head of list..
+		if(ch==1)
+		{
+			cout<<"Person Name: ";
+ 	    	cin>>name;
+ 	    	cout<<"Person id: ";
+ 	    	cin>>id;
+ 	    	cout<<"Person Contact Number: ";
+ 	    	cin>>number;
+ 	    	system("cls");  
+ 	    	cb.setName(name);
+ 	    	cb.setId(id);
+ 	   		cb.setNumber(number); 
+			lo.sortedInsertion(cb);
+			//lo.insertionAtHead(cb);
+			
+		}
+		
+		//sub choice 2 for creating contact in between of list..
+	
+		if(ch==2)
+		{
+			system("cls");
+			cout<<"\n\n\n\n\n\n\n\n\n\n\n\n\t\t\t\tEnter Id After which you want to create the new contact : ";
+			cin>>newID;
+			lo.insertionInBetween(newID);
+			lo.displayList();
+		}
+	}
+	//..........................................................................................................
+	else if(choice==2)
+	{
+		//deletion of contacts
+		cout<<"\n\t\t\t\t\t\tDELETE CONTACT\n";
+		cout<<"\t\t\t_______________________\n\t\t\t1 : Delete The Start\n\t\t\t2 : Delete the End\n\t\t\t3 : Delete In Between\n";
+		cout<<"\t\t\t_______________________\n";
+		cin>>ch;
+		
+		if(ch==1){
+			lo.delFir();
+			lo.displayList();
+		}
+		else if(ch==2){
+			lo.DeleteLast();
+			lo.displayList();
+		}
+		else if(ch==3){
+			cout<<"Enter Id You Want to Delete\n";
+	    	cin>>del;
+        	lo.deleteInBetween(del);
+        	lo.displayList();
+		}
+	}
+	//Displaying list 
+	else if(choice==3)
+	{
+		cout<<"\n\t\t\t\t\t\tDISPLAY LIST\n";
+		cout<<"\t\t\t_______________________\n\t\t\t1 : Display Input List\n\t\t\t2 : Display Reserve List\n";
+		cout<<"\t\t\t_______________________\n";
+		cin>>ch;
+		if(ch==1){
+		lo.displayList();
+		Sleep(2000);
+		}
+		if(ch==2)
+		{
+			lo.displayReverseList();
+			lo.displayList();
+			Sleep(2000);
+		}
+	}
+	else if(choice==4)
+	{
+		cout<<"ENTER the id of contact you want to delete?\n";
+		cin>>id;
+		lo.UpdateContact(id);
+	}
+	if(choice==5)
+	{
+			cout<<"\n\t\t\t\t\t\tSEARCH CONTACT\n";
+		cout<<"\t\t\t_______________________\n\t\t\t1 : Search With Name\n\t\t\t2 : Search with Character\n";
+		cout<<"\t\t\t_______________________\n";
+		cin>>ch;
+		if(ch==1)
+		{
+			string newName;
+			
+			cout<<"ENter the name of the person you want to search?\n";
+			cin>>newName;
+			lo.Search(newName);
+		}
+		if(ch==2){
+		char cha;
+		cout<<"ENter the starting character of the name you want to search?\n";
+		cin>>cha;
+		lo.SearchWithChar(cha);
+	}
+	
+		
+	}
+	if(choice==6)
+	{
+	//lo.insertionAtHead(cb);
+//	lo.//sortedInsertion(cb);
+		lo.displayList();
+	}
+	//system("cls");
+	cout<<"\n\n\n\n\n\n\n\n\n\n\n\n\t\t\t\t\tEnter 1 to contineu and 0 to EXIT... : ";
+	cin>>n;
+	//Ending while
+	}
+return 0;
+}
